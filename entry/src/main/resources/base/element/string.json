@@ -1,0 +1,22 @@
+{
+  "string": [
+	{
+	  "name": "module_desc",
+	  "value": "module description"
+	},
+	{
+	  "name": "EntryAbility_desc",
+	  "value": "description"
+	},
+	{
+	  "name": "EntryAbility_label",
+	  "value": "label"
+	},
+	  { "name": "app_desc", "value": "Kalp atışı ve tempoya göre koşu asistanı." },
+	  { "name": "reason_health", "value": "Koşu sırasında kalp atışını okumak için kullanılır." },
+	  { "name": "reason_motion", "value": "Adım ve hareket verisiyle hız/mesafe hesaplamak için kullanılır." },
+	  { "name": "reason_accel", "value": "Tempo ve hareket değişimlerini tespit etmek için kullanılır." },
+	  { "name": "reason_gyro", "value": "Hareket yönü ve stabilite takibi için kullanılır." },
+	  { "name": "reason_vibrate", "value": "Uyarılar için titreşim geri bildirimi verir." }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "src": [
+    "pages/HeartRateAlertPage",
+    "pages/RunningPage",
+    "pages/StartPage",
+    "pages/MainPage"
+  ]
+}
