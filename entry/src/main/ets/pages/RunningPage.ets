@@ -1,24 +1,30 @@
 import { RunState } from '../models/RunModels';
 import { runViewModel } from '../viewmodels/RunViewModel';
-import { ArcButton, ArcButtonOptions, ArcButtonPosition, ArcButtonStyleMode, ColorMetrics, router } from '@kit.ArkUI';
+import { ArcButton, ArcButtonOptions, ArcButtonPosition, ArcButtonStyleMode, ColorMetrics } from '@kit.ArkUI';
 import { LiveMetricsComponent } from '../components/LiveMetricsComponent';
+import { NavigationService } from '../services/NavigationService';
 
 @Entry
 @Component
-struct RunningPage {
+export struct RunningPage {
   @State private runState: RunState = runViewModel.getCurrentState();
-  @State private timer: number = 0;
+  private timer: number = 0;
 
   aboutToAppear() {
     this.runState = runViewModel.getCurrentState();
     runViewModel.onStateChange((state: RunState) => {
       this.runState = state;
       if (state.currentPage === 'heartRateAlert') {
-        router.pushUrl({ url: 'pages/HeartRateAlertPage' });
+
+        const pathStack = NavigationService.getInstance().pageInfos;
+        const currentPath = pathStack.getAllPathName();
+
+        if (currentPath[currentPath.length - 1] !== 'HeartRateAlertPage') {
+          pathStack.pushPath({ name: 'HeartRateAlertPage' });
+        }
       }
     });
 
-    // Timer for UI updates
     this.timer = setInterval(() => {
       this.runState = runViewModel.getCurrentState();
     }, 10000);
@@ -40,7 +46,7 @@ struct RunningPage {
             backgroundColor: ColorMetrics.resourceColor($r('app.color.button')),
             onClick: () => {
               runViewModel.stopSession();
-              router.back();
+              NavigationService.getInstance().pageInfos.pop();
             }
           })
         })
@@ -66,7 +72,7 @@ struct RunningPage {
           Progress({
             value: this.runState.liveMetrics.distanceKm,
             total: this.runState.sessionConfig.goalRunKm,
-            type: ProgressType.Ring,
+            type: ProgressType.Ring
 
           })
             .style({ strokeWidth: 5 })

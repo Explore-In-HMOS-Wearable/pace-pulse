@@ -2,7 +2,7 @@
   "modelVersion": "5.1.0",
   "description": "Please describe the basic information.",
   "dependencies": {
-    "@ohos/lottie": "^2.0.24"
+    "@ohos/lottie": "^2.0.0"
   },
   "devDependencies": {},
   "dynamicDependencies": {}

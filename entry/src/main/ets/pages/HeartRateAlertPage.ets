@@ -1,13 +1,13 @@
 import { RunState } from '../models/RunModels';
 import { runViewModel } from '../viewmodels/RunViewModel';
-import { router } from '@kit.ArkUI';
 import lottie, { AnimationItem } from '@ohos/lottie';
+import { NavigationService } from '../services/NavigationService';
 
 @Entry
 @Component
-struct HeartRateAlertPage {
+export struct HeartRateAlertPage {
   @State private runState: RunState = runViewModel.getCurrentState();
-  @State private timer: number = 0;
+  private timer: number = 0;
   private politeChickyController: CanvasRenderingContext2D = new CanvasRenderingContext2D();
   private politeChicky: string = 'politeChicky';
   private politeChickyPath: string = 'rawfile/heartBeat.json';
@@ -20,7 +20,7 @@ struct HeartRateAlertPage {
       const state = runViewModel.getCurrentState();
       if (state.currentPage === 'running') {
         clearInterval(this.timer);
-        router.back();
+        NavigationService.getInstance().pageInfos.pop();
       }
       this.runState = state;
     }, 1000);
@@ -28,6 +28,7 @@ struct HeartRateAlertPage {
 
   aboutToDisappear() {
     clearInterval(this.timer);
+    lottie.destroy(this.politeChicky);
   }
 
   build() {
@@ -45,13 +46,13 @@ struct HeartRateAlertPage {
                   config: {
                     radius: 5
                   },
-                  count: 255,
-                },
+                  count: 255
+                }
               },
               color: {
-                range: [Color.White, Color.Red],
-              },
-            },
+                range: [Color.White, Color.Red]
+              }
+            }
           ]
         }).width(200).height(200)
       }.width('10%').height('10%').align(Alignment.Top)
@@ -67,11 +68,11 @@ struct HeartRateAlertPage {
             loop: true,
             autoplay: true,
             name: this.politeChicky,
-            path: this.politeChickyPath,
+            path: this.politeChickyPath
           });
         })
 
-      Text(this.runState.liveMetrics.heartRate + ' bpm')
+      Text(`${this.runState.liveMetrics.heartRate} bpm`)
         .fontSize(18)
         .fontWeight(FontWeight.Bold)
         .fontColor(Color.White)

@@ -1,7 +1,7 @@
 @Component
 export struct MetricCard {
-  @Prop title?: string;
-  @Prop value?: string;
+  @Prop title: string;
+  @Prop value: string;
 
   build() {
     Column() {

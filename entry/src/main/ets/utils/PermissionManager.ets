@@ -1,6 +1,7 @@
 import { abilityAccessCtrl, bundleManager, common, PermissionRequestResult, Permissions } from '@kit.AbilityKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import GlobalContext from './GlobalContext';
 
 const domain = 0x0000;
 
@@ -35,27 +36,28 @@ class PermissionsUtil {
       tokenId = appInfo.accessTokenId;
     } catch (error) {
       let err: BusinessError = error as BusinessError;
-      hilog.error(0x0000,'',`Failed to get bundle info for self. Code is ${err.code}, message is ${err.message}`);
+      hilog.error(0x0000, '', `Failed to get bundle info for self. Code is ${err.code}, message is ${err.message}`);
     }
 
     try {
       grantStatus = await atManager.checkAccessToken(tokenId, permission);
     } catch (error) {
       let err: BusinessError = error as BusinessError;
-      hilog.error(0x0000,'',`Failed to check access token. Code is ${err.code}, message is ${err.message}`);
+      hilog.error(0x0000, '', `Failed to check access token. Code is ${err.code}, message is ${err.message}`);
     }
     return grantStatus;
   }
 
-
   requestPermissions(permissions: Array<Permissions>): void {
+    let context = GlobalContext.getInstance().getCntx() as  common.UIAbilityContext
     let atManager: abilityAccessCtrl.AtManager = abilityAccessCtrl.createAtManager();
-    atManager.requestPermissionsFromUser(getContext() as common.UIAbilityContext, permissions)
+    atManager.requestPermissionsFromUser(context, permissions)
       .then((data: PermissionRequestResult) => {
-        hilog.info(0x0000,'','request Permissions success')
+        hilog.info(0x0000, '', 'request Permissions success')
       })
       .catch((err: BusinessError) => {
-        hilog.error(0x0000,'',`Failed to request permissions from user. Code is ${err.code}, message is ${err.message}`);
+        hilog.error(0x0000, '',
+          `Failed to request permissions from user. Code is ${err.code}, message is ${err.message}`);
       })
   }
 

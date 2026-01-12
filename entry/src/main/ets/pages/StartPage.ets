@@ -4,11 +4,10 @@ import { ArcButton, ArcButtonOptions, ArcButtonPosition } from '@ohos.arkui.adva
 
 @Entry
 @Component
-struct StartPage {
+export struct StartPage {
   @State private goalRunKm: number = 5;
   @State private hrThreshold: number = 170;
   @State private isStarting: boolean = false;
-
   aboutToAppear() {
     runViewModel.onStateChange((state: RunState) => {
     });
@@ -49,7 +48,7 @@ struct StartPage {
           min: 150,
           max: 200,
           step: 5,
-          style: SliderStyle.OutSet,
+          style: SliderStyle.OutSet
         })
           .width('30%')
           .onChange((value: number) => {
@@ -78,7 +77,6 @@ struct StartPage {
               this.isStarting = false;
             }
           }
-        ,
 
         })
       })

@@ -1,16 +1,18 @@
-import { RunState, SessionConfig, LiveMetrics, } from '../models/RunModels';
+import { RunState, SessionConfig, LiveMetrics} from '../models/RunModels';
 import { pedometerService } from '../services/PedometerService';
 import { heartRateService } from '../services/HeartRateService';
 import { VibrationService, Haptic } from '../services/VibrationService';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { sensor } from '@kit.SensorServiceKit';
 import { Permissions } from '@kit.AbilityKit';
+import { NavigationService } from '../services/NavigationService';
 
 class RunViewModel {
   private state: RunState;
   private vibrationService: VibrationService;
   private onStateChangeCallbacks: Array<(state: RunState) => void> = [];
   private startTime: number = 0;
+  private navService = NavigationService.getInstance();
   public static readonly REQUIRED_PERMISSIONS: Permissions[] = [
     'ohos.permission.ACTIVITY_MOTION',
     'ohos.permission.READ_HEALTH_DATA'
@@ -83,6 +85,7 @@ class RunViewModel {
     this.unsubscribeFromSensors();
 
     this.vibrationService.fire(Haptic.FINISH);
+    this.navService.pageInfos.clear();
     this.notifyStateChange();
     console.info('Running session stopped');
   }

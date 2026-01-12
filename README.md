@@ -1,16 +1,16 @@
 > **Note:** To access all shared projects, get information about environment setup, and view other guides, please visit [Explore-In-HMOS-Wearable Index](https://github.com/Explore-In-HMOS-Wearable/hmos-index).
 
-# PacePulse
+# Pace Pulse
 
 This is a comprehensive fitness tracking application for running activities, built with ArkTS and ArkUI with advanced sensor integration and real-time health monitoring features, designed for HarmonyOS NEXT wearable devices. It leverages SensorKit for pedometer and heart rate monitoring with optimized circular screen support with lottie animations.
 
 # Preview
 
 <div>
-    <img src="screenshots/output_1.jpg" width="24%" />
-    <img src="screenshots/output_2.jpg" width="24%" />
-    <img src="screenshots/output_3.jpg" width="24%" />
-    <img src="screenshots/output_4.jpg" width="24%" />
+<img src="screenshots/output_1.jpg" width="24%" />
+<img src="screenshots/output_2.jpg" width="24%" />
+<img src="screenshots/output_3.jpg" width="24%" />
+<img src="screenshots/output_4.jpg" width="24%" />
 </div>
 
 # Use Cases
@@ -100,7 +100,7 @@ resources/
 
 # License
 
-PacePulse is distributed under the terms of the MIT License
+Pace Pulse is distributed under the terms of the MIT License
 See the [LICENSE](./LICENSE) for more information.
 
 

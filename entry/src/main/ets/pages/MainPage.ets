@@ -1,14 +1,18 @@
 import { RunState } from '../models/RunModels';
 import { runViewModel } from '../viewmodels/RunViewModel';
-import { router } from '@kit.ArkUI';
 import permissionsUtil from '../utils/PermissionManager';
 import { abilityAccessCtrl, Permissions } from '@kit.AbilityKit';
+import { NavigationService } from '../services/NavigationService';
+import { StartPage } from './StartPage';
+import { RunningPage } from './RunningPage';
+import { HeartRateAlertPage } from './HeartRateAlertPage';
 
 @Entry
 @Component
 struct MainPage {
-  @State private currentState: RunState = runViewModel.getCurrentState();
-  @State private isInitialized: boolean = false;
+  private currentState: RunState = runViewModel.getCurrentState();
+  private isInitialized: boolean = false;
+  navService: NavigationService = NavigationService.getInstance();
   @State private permissionsGranted: boolean = false;
   @State private isLoading: boolean = true;
   private requiredPermissions: Permissions[] = [
@@ -82,30 +86,9 @@ struct MainPage {
     }
     this.navigateToPage(this.currentState.currentPage);
   }
-
-  private navigateToPage(page: 'start' | 'running' | 'heartRateAlert'): void {
-
-    try {
-      const currentUrl = router.getState().path;
-      const targetUrl: string = this.getPageUrl(page);
-      console.info(`Router navigating to: ${targetUrl}`);
-      if (currentUrl === targetUrl) {
-        console.info('Already on target page, skipping navigation');
-        return;
-      }
-      router.pushUrl({
-        url: targetUrl
-      }).then(() => {
-        console.info('Navigation successful');
-      }).catch((error: Error) => {
-        console.error('Navigation failed:', error.message);
-      });
-
-    } catch (error) {
-      console.error('Navigation error:', error);
-    }
+  private navigateToPage(page: string): void {
+    this.navService.pageInfos.pushPath({ name: page });
   }
-
   private getPageUrl(page: 'start' | 'running' | 'heartRateAlert'): string {
     switch (page) {
       case 'start':
@@ -119,7 +102,7 @@ struct MainPage {
     }
   }
 
-  // permission button  as callback
+
   private async requestPermissionsManually(): Promise<void> {
     try {
       this.isLoading = true;
@@ -130,22 +113,34 @@ struct MainPage {
       this.isLoading = false;
     }
   }
-
+  @Builder
+  routeMap(name: string) {
+    NavDestination() {
+      if (name === 'StartPage') {
+        StartPage()
+      } else if (name === 'RunningPage') {
+        RunningPage()
+      } else if (name === 'HeartRateAlertPage') {
+        HeartRateAlertPage()
+      }
+    }
+    .hideTitleBar(true)
+  }
   build() {
-    Column() {
+    Navigation(this.navService.pageInfos) {
       if (this.isLoading) {
-        // Loading state
         this.LoadingView()
       } else if (!this.permissionsGranted) {
         this.PermissionErrorView()
       } else {
-        this.NormalLoadingView()
+        StartPage()
       }
     }
+    .navDestination(this.routeMap)
+    .mode(NavigationMode.Stack)
+    .hideTitleBar(true)
     .width('100%')
     .height('100%')
-    .justifyContent(FlexAlign.Center)
-    .alignItems(HorizontalAlign.Center)
   }
 
   @Builder
@@ -206,3 +201,5 @@ struct MainPage {
     }
   }
 }
+
+export { MainPage };
